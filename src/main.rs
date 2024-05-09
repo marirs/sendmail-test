@@ -18,6 +18,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let subject = opts.get_subject();
     let body = opts.get_body();
     let smtp_host = opts.get_smtp_host();
+    let smtp_port = opts.get_smtp_port();
+    let smtp_hello = opts.get_smtp_hello_name();
 
     match opts.use_ses() {
         true => {
@@ -33,8 +35,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         false => {
             println!("Using SMTP to send email...");
             let smtp_credentials = Credentials::new(opts.get_smtp_user(), opts.get_smtp_password());
-            let mailer = AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp_host)?
-                .credentials(smtp_credentials)
+            let mailer = AsyncSmtpTransport::<Tokio1Executor>::relay(&smtp_host)?;
+            let mailer = if let Some(p) = smtp_port{
+                mailer.port(p)
+            } else {
+                mailer
+            };
+            let mailer = if let Some(p) = smtp_hello{
+                mailer.hello_name(lettre::transport::smtp::extension::ClientId::Domain(p))
+            } else {
+                mailer
+            };
+            let mailer = mailer.credentials(smtp_credentials)
                 .build();
             let res = send_email_smtp(&mailer, &from, &to, &subject, body).await;
             if res.is_ok() {
