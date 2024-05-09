@@ -13,6 +13,12 @@ Options:
   -h, --smtp-host <SMTP-HOST>
           SMTP Host
 
+      --port <SMTP-PORT>
+          SMTP Port
+
+      --hello_name <SMTP-HELLO-NAME>
+          SMTP Hello name
+
   -u, --smtp-user <SMTP-USER>
           SMTP User
 
@@ -35,11 +41,10 @@ Options:
           USE Amazon SES Service, if yes!
 
       --help
-          
+
 
   -V, --version
           Print version
-
 ```
 
 ### Example
