@@ -8,6 +8,12 @@ pub(crate) struct CliOpts {
     /// SMTP Host
     #[clap(short = 'h', long, value_name = "SMTP-HOST")]
     smtp_host: String,
+    /// SMTP Port
+    #[clap(long = "port", value_name = "SMTP-PORT")]
+    smtp_port: Option<u16>,
+    /// SMTP Hello name
+    #[clap(long = "hello_name", value_name = "SMTP-HELLO-NAME")]
+    smtp_hello: Option<String>,
     /// SMTP User
     #[clap(short = 'u', long, value_name = "SMTP-USER")]
     smtp_user: String,
@@ -55,6 +61,16 @@ impl CliOpts {
     /// Get the SMTP Host
     pub(crate) fn get_smtp_host(&self) -> String {
         self.smtp_host.to_owned()
+    }
+
+    /// Get the SMTP Port
+    pub(crate) fn get_smtp_port(&self) -> Option<u16> {
+        self.smtp_port.to_owned()
+    }
+
+    /// Get the SMTP Hello name
+    pub(crate) fn get_smtp_hello_name(&self) -> Option<String> {
+        self.smtp_hello.to_owned()
     }
 
     /// Get the SMTP User
